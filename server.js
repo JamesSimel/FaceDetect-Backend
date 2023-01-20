@@ -1,6 +1,8 @@
 const express = require("express");
-
 const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt-nodejs');
+
+var hash = bcrypt.hashSync("bacon");
 
 const app = express();
 
@@ -33,6 +35,16 @@ app.get("/", (req, res)=>{
 });
 
 app.post("/signin", (req, res)=>{
+    bcrypt.compare("465@g647", '$2a$10$vEalas.sdZ1SBNGefSIv5.RKOyZni41eMTaqITmLJlo4z.ecqXWem', function(err, res) {
+        // res == true
+        console.log('first guess', res);
+    });
+    bcrypt.compare("veggies", '$2a$10$vEalas.sdZ1SBNGefSIv5.RKOyZni41eMTaqITmLJlo4z.ecqXWem', function(err, res) {
+        // res = false
+        console.log('second guess', res);
+    });
+    
+    
     if (req.body.email === database.users[0].email &&
          req.body.password === database.users[0].password
          ) {
@@ -56,9 +68,6 @@ app.post("/register", (req, res)=>{
         }
     )
     res.json(database.users[database.users.length-1]);
-})
-app.listen(5000, ()=> {
-console.log("app is running on port 5000");
 })
 
 app.get("/profile/:id", (req, res) => {
@@ -89,12 +98,22 @@ app.put("/image", (req, res) => {
         res.status(404).json("No such user!")
     }
 });
-/*
--- HOW THE API WILL WORK
--- / Have a route that response with  res = this is working
----/signin --> POST = success/ fail
----/register --> POST =  - user
----/profile/:userid = GET = user
----/image --> PUT  --> user
---
-*/
+
+
+// bcrypt.hash(password, null, null, function(err, hash) {
+//     console.log(hash);
+// });
+
+// Load hash from your password DB.
+// bcrypt.compare("465@g647", $2a$10$vEalas.sdZ1SBNGefSIv5.RKOyZni41eMTaqITmLJlo4z.ecqXWem, function(err, res) {
+//     // res == true
+// });
+// bcrypt.compare("veggies", hash, function(err, res) {
+//     // res = false
+// });
+
+
+app.listen(5000, ()=> {
+    console.log("app is running on port 5000");
+    })
+    
