@@ -61,12 +61,33 @@ app.listen(5000, ()=> {
 console.log("app is running on port 5000");
 })
 
-app.post("/profile:id", (req, res) => {
-    res.json("registered sucess")
+app.get("/profile/:id", (req, res) => {
+    const { id } = req.params;
+    let found = false;
+    database.users.forEach(user => {
+        if(user.id === id){
+            found = true;
+            return res.json(user);
+        }  
+   })
+   if (!found) {
+    res.status(404).json("No such user")
+}
 });
 
 app.put("/image", (req, res) => {
-    res.json("Your rank is #10")
+    const { id } = req.body;
+    let found = false;
+    database.users.forEach(user =>{
+        if (user.id === id ){
+            found = true;
+            user.entries++;
+           return res.json(user.entries);
+        }
+    })
+    if (!found){
+        res.status(404).json("No such user!")
+    }
 });
 /*
 -- HOW THE API WILL WORK
