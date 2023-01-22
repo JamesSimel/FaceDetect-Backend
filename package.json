@@ -1,8 +1,9 @@
 {
   "name": "facedetect-backend",
   "version": "1.0.0",
-  "description": "This is a Face Detect App that uses Clarifai API, PostgreSQL",
+  "description": "This is a Face Detect App that uses Clarifai API, PostgreSQL and ReactJs on FrontEnd",
   "main": "index.js",
+  "type":"module",
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"

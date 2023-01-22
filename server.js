@@ -50,7 +50,7 @@ app.post("/signin", (req, res)=>{
          ) {
             res.json("Success!")
          } else {
-            res.status(400).json("error signing in!");
+            res.status(404).json("error signing in!");
          }
     
 });
