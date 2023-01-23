@@ -1,12 +1,18 @@
+// import express  from "express";  
 const express = require("express");
-const bodyParser = require("body-parser");
+// import bcrypt from 'bcrypt-nodejs'; 
 const bcrypt = require('bcrypt-nodejs');
+// import bodyParser from "body-parser";
+const bodyParser = require('body-parser')
+// import cors from 'cors';
+const cors = require('cors');
+var hash = bcrypt.hashSync("bacon"); 
 
-var hash = bcrypt.hashSync("bacon");
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const database = 
     {
@@ -24,12 +30,13 @@ const database =
                 name: "Sally",
                 email:"sally@gmail.com",
                 entries: 0,
-                password:"banana",
+                password:"bananas",
                 joined: new Date()
             }
         ] 
         
     }
+
 app.get("/", (req, res)=>{
     res.send(database.users);
 });
@@ -48,9 +55,9 @@ app.post("/signin", (req, res)=>{
     if (req.body.email === database.users[0].email &&
          req.body.password === database.users[0].password
          ) {
-            res.json("Success!")
+            res.json(database.users[0])
          } else {
-            res.status(404).json("error signing in!");
+            res.status(400).json("error signing in!");
          }
     
 });
@@ -95,7 +102,7 @@ app.put("/image", (req, res) => {
         }
     })
     if (!found){
-        res.status(404).json("No such user!")
+        res.status(400).json("No such user!")
     }
 });
 
@@ -113,7 +120,7 @@ app.put("/image", (req, res) => {
 // });
 
 
-app.listen(5000, ()=> {
-    console.log("app is running on port 5000");
+app.listen(4000, ()=> {
+    console.log("app is running on port 4000");
     })
     
