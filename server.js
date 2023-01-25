@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const knex = require('knex');
 
-const postgres = knex({
+const db = knex({
     client: 'pg',
     connection: {
         host : '127.0.0.1',
@@ -19,7 +19,6 @@ const postgres = knex({
     }
 });
 
-postgres.select('*').from('users');
 
 var hash = bcrypt.hashSync("bacon"); 
 
@@ -79,17 +78,20 @@ app.post("/signin", (req, res)=>{
 
 app.post("/register", (req, res)=>{
     const {name, email, password} = req.body;
-    database.users.push(
+    db('users')
+    .returning('*')
+    .insert(
         {
-            id: "125",
+            email: email,
             name: name,
-            email:email,
-            entries: 0,
-            password:password,
-            joined: new Date()
+            joined: new Date(),
         }
-    )
-    res.json(database.users[database.users.length-1]);
+        ).then(user => {
+            res.json(user[0])
+        })
+        .catch(err => {
+            res.status(400).json('Unable to register');
+        })
 })
 
 app.get("/profile/:id", (req, res) => {
