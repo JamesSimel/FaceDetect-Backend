@@ -6,6 +6,21 @@ const bcrypt = require('bcrypt-nodejs');
 const bodyParser = require('body-parser')
 // import cors from 'cors';
 const cors = require('cors');
+const knex = require('knex');
+
+const postgres = knex({
+    client: 'pg',
+    connection: {
+        host : '127.0.0.1',
+        port : 5432,
+        user : 'mrrobot',
+        password : 'jkSn#6162',
+        database : 'smart-brain'
+    }
+});
+
+postgres.select('*').from('users');
+
 var hash = bcrypt.hashSync("bacon"); 
 
 
