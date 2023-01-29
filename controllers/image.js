@@ -7,17 +7,18 @@ const metadata = new grpc.Metadata();
 metadata.set("authorization", "Key a98ffe3acb7b4ed884e7ab5a5811c7b0");
 
 // const clarifai = require('clarifai'); // old way
+// console.log(clarifai);
 
 
 // const app = new Clarifai.App({
 //     apiKey: ''
 //    });
-const hanldeApiCall = (req, res) => {
+const handleApiCall = (req, res) => {
     stub.PostModelOutputs(
         {
             // This is the model ID of a publicly available General model. You may use any other public or custom model ID.
-            model_id: "aaa03c23b3724a16a56b629203edc62c",
-            inputs: [{data: {image: {url: "https://samples.clarifai.com/dog2.jpeg"}}}]
+            model_id: 'a403429f2ddf4b49b307e318f00e528b',
+            inputs: [{data: {image: {url: req.body.input}}}]
         },
         metadata,
         (err, response) => {
@@ -35,6 +36,7 @@ const hanldeApiCall = (req, res) => {
             for (const c of response.outputs[0].data.concepts) {
                 console.log(c.name + ": " + c.value);
             }
+            res.json(response)
         }
     );
 
@@ -68,5 +70,5 @@ module.exports = {
     handleImage
 }
 module.exports = {
-    hanldeApiCall
+    handleApiCall
 }
